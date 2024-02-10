@@ -28,7 +28,9 @@ export const postContact = createAsyncThunk(
       const response = await addContact(body);
       return response.data;
     } catch (error) {
-      Notify.failure('Whoops. Something went wrong... <br/> Try again!!!');
+      Notify.failure('Whoops. Something went wrong... <br/> Try again!!!', {
+        position: 'center-top',
+      });
       console.error(error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -40,10 +42,12 @@ export const delContactById = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const response = await delContact(id);
-      Notify.success(`Delete contact: ${response.data.name}. Success!`);
+      Notify.success(`Delete contact: ${response.data.name}. Success!`, {
+        position: 'center-top',
+      });
       return response.data.id;
     } catch (error) {
-      Notify.failure('Contact not found :(');
+      Notify.failure('Contact not found :(', { position: 'center-top' });
       console.error(error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
