@@ -8,7 +8,7 @@ import { delContact } from '../../redux/contacts/contactsSlice';
 import { delContactById } from '../../redux/contacts/contacts-operation';
 
 const ContactList = () => {
-  const contactlist = useSelector(getAllContacts);
+  const contactlist = useSelector(getFilteredContacts);
   const dispatch = useDispatch();
 
   const deleteContact = ({ target }) => {

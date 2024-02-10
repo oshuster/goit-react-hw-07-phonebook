@@ -4,7 +4,6 @@ import {
   postContact,
   delContactById,
 } from './contacts-operation';
-import { nanoid } from 'nanoid';
 const initialState = {
   items: [],
   isLoading: false,
