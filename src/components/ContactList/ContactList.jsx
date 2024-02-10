@@ -1,14 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import css from './contactList.module.css';
-import {
-  getFilteredContacts,
-  getAllContacts,
-} from '../../redux/contacts/contacts-selectors';
-import { delContact } from '../../redux/contacts/contactsSlice';
+import { selectFilteredContacts } from '../../redux/contacts/contacts-selectors';
 import { delContactById } from '../../redux/contacts/contacts-operation';
 
 const ContactList = () => {
-  const contactlist = useSelector(getFilteredContacts);
+  const contactlist = useSelector(selectFilteredContacts);
   const dispatch = useDispatch();
 
   const deleteContact = ({ target }) => {
@@ -31,6 +27,7 @@ const ContactList = () => {
       </button>
     </li>
   ));
+
   return <ul className="list-group">{elements}</ul>;
 };
 

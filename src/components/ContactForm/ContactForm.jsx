@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { postContact } from '../../redux/contacts/contacts-operation';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllContacts } from '../../redux/contacts/contacts-selectors';
+import { selectAllContacts } from '../../redux/contacts/contacts-selectors';
 
 import css from './contactForm.module.css';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({ name: '', phone: '' });
-  const contacts = useSelector(getAllContacts);
+  const contacts = useSelector(selectAllContacts);
   const dispatch = useDispatch();
 
-  ////
   const regExpPattern = {
     name: new RegExp(
       "^[a-zA-Zа-яА-Я]+(([' \\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -41,7 +40,6 @@ const ContactForm = () => {
     }
   };
 
-  ////
   const handleInput = e => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
