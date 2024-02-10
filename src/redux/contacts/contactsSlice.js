@@ -1,4 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {
+  fetchContacts,
+  postContact,
+  delContactById,
+} from './contacts-operation';
 import { nanoid } from 'nanoid';
 const initialState = {
   items: [],
@@ -9,92 +14,52 @@ const initialState = {
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
-  reducers: {
-    fetchContactsLoading: {
-      reducer(state) {
+  extraReducers: builder => {
+    builder
+      //fetchContacts
+      .addCase(fetchContacts.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
-      },
-    },
-    fetchContactsSuccess: {
-      reducer(state, { payload }) {
+      })
+      .addCase(fetchContacts.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.items = payload;
-      },
-    },
-    fetchContactsError: {
-      reducer(state, { payload }) {
+      })
+      .addCase(fetchContacts.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
-      },
-    },
-    postContactLoading: {
-      reducer(state) {
+      })
+      //addContact
+      .addCase(postContact.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
-      },
-    },
-    postContactSuccess: {
-      reducer(state, { payload }) {
+      })
+      .addCase(postContact.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.items.push(payload);
-      },
-    },
-    postContactError: {
-      reducer(state, { payload }) {
+      })
+      .addCase(postContact.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
-      },
-    },
-    deleteContactLoading: {
-      reducer(state) {
+      })
+      //deleteContactById
+      .addCase(delContactById.pending, (state, _) => {
         state.isLoading = true;
         state.error = null;
-      },
-    },
-    deleteContactSuccess: {
-      reducer(state, action) {
-        state.items = state.items.filter(
-          contact => contact.id !== action.payload
-        );
-      },
-    },
-    deleteContactError: {
-      reducer(state, { payload }) {
+      })
+      .addCase(delContactById.fulfilled, (state, { payload }) => {
+        state.items = state.items.filter(contact => contact.id !== payload);
+      })
+      .addCase(delContactById.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
-      },
-    },
-    addContact: {
-      reducer(state, action) {
-        return [...state, action.payload];
-      },
-      prepare(data) {
-        return {
-          payload: {
-            id: nanoid(),
-            ...data,
-          },
-        };
-      },
-    },
-    delContact: {
-      reducer(state, action) {
-        return state.filter(contact => contact.id !== action.payload);
-      },
-    },
+      });
   },
 });
 
 export const {
   addContact,
   delContact,
-  fetchContactsLoading,
-  fetchContactsSuccess,
-  fetchContactsError,
-  postContactLoading,
-  postContactSuccess,
-  postContactError,
   deleteContactLoading,
   deleteContactSuccess,
   deleteContactError,
