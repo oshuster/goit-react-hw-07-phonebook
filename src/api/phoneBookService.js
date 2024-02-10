@@ -9,7 +9,7 @@ export const getContacts = () => {
   return instance.get('/');
 };
 
-export const delContacts = id => {
+export const delContact = id => {
   return instance.delete(`/${id}`);
 };
 

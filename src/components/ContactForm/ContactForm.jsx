@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { addContact } from '../../redux/contacts/contactsSlice';
+import { postContact } from '../../redux/contacts/contacts-operation';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllContacts } from '../../redux/contacts/contacts-selectors';
 
 import css from './contactForm.module.css';
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState({ name: '', number: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '' });
   const contacts = useSelector(getAllContacts);
   const dispatch = useDispatch();
 
@@ -15,7 +15,7 @@ const ContactForm = () => {
     name: new RegExp(
       "^[a-zA-Zа-яА-Я]+(([' \\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
     ),
-    number: new RegExp(
+    phone: new RegExp(
       '\\+?\\d{1,4}?[ .\\-\\s]?\\(?\\d{1,3}?\\)?[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,9}'
     ),
   };
@@ -23,13 +23,13 @@ const ContactForm = () => {
   const saveContact = e => {
     e.preventDefault();
     // перевірка на коректність введених даних
-    if (regExpPattern.name.test(name) && regExpPattern.number.test(number)) {
+    if (regExpPattern.name.test(name) && regExpPattern.phone.test(phone)) {
       // перевірка на наявність контакту по номеру
-      if (!contacts.some(contact => contact.number === number)) {
-        dispatch(addContact(formData));
+      if (!contacts.some(contact => contact.phone === phone)) {
+        dispatch(postContact(formData));
         setFormData({
           name: '',
-          number: '',
+          phone: '',
         });
       } else {
         alert('Такий контакт вже існує');
@@ -47,7 +47,7 @@ const ContactForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const { name, number } = formData;
+  const { name, phone } = formData;
   return (
     <form className={css.save_form} onSubmit={saveContact}>
       <div className="mb-3">
@@ -75,8 +75,8 @@ const ContactForm = () => {
           type="tel"
           className="form-control"
           id="exampleInputPhone1"
-          name="number"
-          value={number}
+          name="phone"
+          value={phone}
           onChange={handleInput}
           required
         />
